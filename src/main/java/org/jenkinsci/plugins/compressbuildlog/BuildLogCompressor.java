@@ -103,6 +103,11 @@ public class BuildLogCompressor extends JobProperty<AbstractProject<?, ?>> {
                 // XXX try multiple times because Windows?
                 if (!log.delete()) {
                     LOGGER.log(Level.WARNING, String.format("Failed to delete build log of %s after compression", run));
+                } else {
+                	File gzLogFile = new File(log.getParentFile(), gzippedLogName);
+                	if ( gzLogFile.renameTo(log) ) {
+                		 LOGGER.log(Level.WARNING, String.format("Failed to rename build log after compression"));
+                	}
                 }
             }
         }
